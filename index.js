@@ -31,16 +31,26 @@ async function run() {
 
 
     const productsCollection = client.db("Shoe-SavantDB").collection("products");
+    const cartsCollection = client.db("Shoe-SavantDB").collection("carts");
 
+    // PRODUCTS RELATED API
     app.get('/products',async(req,res)=>{
         const result = await productsCollection.find().toArray();
         res.send(result);
     });
-
     app.get('/products/:id', async (req, res) => {
         const id = req.params.id;
         const query = {_id : new ObjectId(id)}
         const result = await productsCollection.findOne(query);
+        res.send(result);
+    });
+
+
+
+    //CARTS RELATED API
+    app.post('/carts',async(req,res)=>{
+        const cartItem = req.body;
+        const result = await cartsCollection.insertOne(cartItem);
         res.send(result);
     });
 
